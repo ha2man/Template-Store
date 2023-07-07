@@ -1,11 +1,11 @@
 const Mongoose = require('mongoose');
 
-const { MERCHANT_STATUS } = require('../constants');
+const { DEVELOPER_STATUS } = require('../constants');
 
 const { Schema } = Mongoose;
 
-// Merchant Schema
-const MerchantSchema = new Schema({
+// Developer Schema
+const DeveloperSchema = new Schema({
   name: {
     type: String,
     trim: true
@@ -22,11 +22,11 @@ const MerchantSchema = new Schema({
   },
   status: {
     type: String,
-    default: MERCHANT_STATUS.Waiting_Approval,
+    default: DEVELOPER_STATUS.Waiting_Approval,
     enum: [
-      MERCHANT_STATUS.Waiting_Approval,
-      MERCHANT_STATUS.Rejected,
-      MERCHANT_STATUS.Approved
+      DEVELOPER_STATUS.Waiting_Approval,
+      DEVELOPER_STATUS.Rejected,
+      DEVELOPER_STATUS.Approved
     ]
   },
   updated: Date,
@@ -36,4 +36,4 @@ const MerchantSchema = new Schema({
   }
 });
 
-module.exports = Mongoose.model('Merchant', MerchantSchema);
+module.exports = Mongoose.model('Developer', DeveloperSchema);
