@@ -15,13 +15,14 @@ router.post('/add', auth, async (req, res) => {
     const product = req.body.productId;
     const user = req.user._id;
 
+    const productDoc = await Product.find({_id:product});
     const order = new Order({
       product,
-      user
+      user,
+      total: productDoc.price
     });
 
     const orderDoc = await order.save();
-    const productDoc = await Product.find({_id:product});
 
     const newOrder = {
       _id: orderDoc._id,

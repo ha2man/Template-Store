@@ -18,6 +18,7 @@ router.get('/income', auth, role.check(ROLES.Admin), async (req, res) => {
         const _to = new Date(to_date);
 
         const orders = await Order.find({ created: { $gte: _from, $lte: _to } });
+        orders.foreach(order => total_income += order.total);
         res.status(200).json({
             income: total_income
         })
