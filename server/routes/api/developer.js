@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const { DEVELOPER_STATUS, ROLES } = require('../../constants');
 const Developer = require('../../models/developer');
 const User = require('../../models/user');
-const Brand = require('../../models/brand');
 const auth = require('../../middleware/auth');
 const role = require('../../middleware/role');
 const mailgun = require('../../services/mailgun');
@@ -122,7 +121,6 @@ router.put('/:id/active', auth, async (req, res) => {
     });
 
     if (!update.isActive) {
-      await deactivateBrand(developerId);
       await mailgun.sendEmail(developerDoc.email, 'developer-deactivate-account');
     }
 
@@ -234,8 +232,6 @@ router.post('/signup/:token', async (req, res) => {
       email
     });
 
-    await createMerchantBrand(merchantDoc);
-
     res.status(200).json({
       success: true
     });
@@ -252,14 +248,14 @@ router.delete(
   role.check(ROLES.Admin),
   async (req, res) => {
     try {
-      const merchantId = req.params.id;
-      await deactivateBrand(merchantId);
-      const merchant = await Merchant.deleteOne({ _id: merchantId });
+      const developerId = req.params.id;
+      await deactivateDeveloper(developerId);
+      const developer = await Developer.deleteOne({ _id: developerId });
 
       res.status(200).json({
         success: true,
-        message: `Merchant has been deleted successfully!`,
-        merchant
+        message: `Developer has been deleted successfully!`,
+        developer
       });
     } catch (error) {
       res.status(400).json({
@@ -269,39 +265,7 @@ router.delete(
   }
 );
 
-const deactivateBrand = async merchantId => {
-  const merchantDoc = await Merchant.findOne({ _id: merchantId }).populate(
-    'brand',
-    '_id'
-  );
-  if (!merchantDoc || !merchantDoc.brand) return;
-  const brandId = merchantDoc.brand._id;
-  const query = { _id: brandId };
-  const update = {
-    isActive: false
-  };
-  return await Brand.findOneAndUpdate(query, update, {
-    new: true
-  });
-};
-
-const createMerchantBrand = async ({ _id, brandName, business }) => {
-  const newBrand = new Brand({
-    name: brandName,
-    description: business,
-    merchant: _id,
-    isActive: false
-  });
-
-  const brandDoc = await newBrand.save();
-
-  const update = {
-    brand: brandDoc._id
-  };
-  await Merchant.findOneAndUpdate({ _id }, update);
-};
-
-const createMerchantUser = async (email, name, merchant, host) => {
+const createDeveloperUser = async (email, name, developer, host) => {
   const firstName = name;
   const lastName = '';
 
@@ -310,17 +274,15 @@ const createMerchantUser = async (email, name, merchant, host) => {
   if (existingUser) {
     const query = { _id: existingUser._id };
     const update = {
-      merchant,
-      role: ROLES.Merchant
+      developer,
+      role: ROLES.Developer
     };
 
-    const merchantDoc = await Merchant.findOne({
+    const developerDoc = await Developer.findOne({
       email
     });
 
-    await createMerchantBrand(merchantDoc);
-
-    await mailgun.sendEmail(email, 'merchant-welcome', null, name);
+    await mailgun.sendEmail(email, 'developer-welcome', null, name);
 
     return await User.findOneAndUpdate(query, update, {
       new: true
@@ -339,7 +301,7 @@ const createMerchantUser = async (email, name, merchant, host) => {
       role: ROLES.Merchant
     });
 
-    await mailgun.sendEmail(email, 'merchant-signup', host, {
+    await mailgun.sendEmail(email, 'developer-signup', host, {
       resetToken,
       email
     });

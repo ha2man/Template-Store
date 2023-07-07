@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { stripe } = require('../../config/keys');
-const { createInvoice } = require('../../services/invoiceservice');
 const _stripe = require('stripe')(stripe.secretKey);
 const { v4: uuidv4 } = require('uuid');
 
@@ -31,13 +30,6 @@ router.post('/pay', async (req, res, next) => {
         }, {idempotencyKey})
     }).then(result => {
         res.status(200).json(result);
-        createInvoice(token.email, amount, description)
-            .then(invoice => {
-                downloadInvoice(invoice)
-            })
-            .catch(error => {
-                console.error('Error creating invoice:', error);
-            })
     }).catch(err => {
         console.log(err);
     });
