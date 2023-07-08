@@ -26,3 +26,14 @@ exports.subscribeToNewsletter = async email => {
     return error;
   }
 };
+
+exports.unsubscribeToNewsletter = async email => {
+  try {
+    return await mailchimp.post(`lists/${listKey}/members`, {
+      email_address: email,
+      status: 'unsubscribed'
+    });
+  } catch (error) {
+    return error;
+  }
+}

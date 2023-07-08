@@ -19,32 +19,6 @@ exports.getStoreProductsQuery = (min, max, rating) => {
   const basicQuery = [
     {
       $lookup: {
-        from: 'brands',
-        localField: 'brand',
-        foreignField: '_id',
-        as: 'brands'
-      }
-    },
-    {
-      $unwind: {
-        path: '$brands',
-        preserveNullAndEmptyArrays: true
-      }
-    },
-    {
-      $addFields: {
-        'brand.name': '$brands.name',
-        'brand._id': '$brands._id',
-        'brand.isActive': '$brands.isActive'
-      }
-    },
-    {
-      $match: {
-        'brand.isActive': true
-      }
-    },
-    {
-      $lookup: {
         from: 'reviews',
         localField: '_id',
         foreignField: 'product',
@@ -73,7 +47,6 @@ exports.getStoreProductsQuery = (min, max, rating) => {
     },
     {
       $project: {
-        brands: 0,
         reviews: 0
       }
     }

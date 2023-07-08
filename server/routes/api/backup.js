@@ -12,7 +12,7 @@ router.post('/manual', auth, role.check(ROLES.Admin), async (req, res) => {
     try {
       const user = req.user;
   
-      backupDatabase('manual');
+      await backupDatabase('manual');
   
       res.status(200).json({
         success: true,
@@ -30,7 +30,7 @@ router.post('/auto', auth, role.check(ROLES.Admin), async (req, res) => {
     try {
       const user = req.user;
   
-      backupDatabase('auto');
+      await backupDatabase('auto');
   
       res.status(200).json({
         success: true,
@@ -42,3 +42,5 @@ router.post('/auto', auth, role.check(ROLES.Admin), async (req, res) => {
       });
     }
 });
+
+module.exports = router;

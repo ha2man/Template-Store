@@ -23,7 +23,7 @@ router.get('/search', auth, role.check(ROLES.Admin), async (req, res) => {
         ]
       },
       { password: 0, _id: 0 }
-    ).populate('merchant', 'name');
+    ).populate('developer', 'name');
 
     res.status(200).json({
       users
@@ -36,13 +36,13 @@ router.get('/search', auth, role.check(ROLES.Admin), async (req, res) => {
 });
 
 // fetch users api
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, role.check(ROLES.Admin), async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
 
     const users = await User.find({}, { password: 0, _id: 0, googleId: 0 })
       .sort('-created')
-      .populate('merchant', 'name')
+      .populate('developer', 'name')
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
@@ -65,14 +65,7 @@ router.get('/', auth, async (req, res) => {
 router.get('/me', auth, async (req, res) => {
   try {
     const user = req.user._id;
-    const userDoc = await User.findById(user, { password: 0 }).populate({
-      path: 'merchant',
-      model: 'Merchant',
-      populate: {
-        path: 'brand',
-        model: 'Brand'
-      }
-    });
+    const userDoc = await User.findById(user, { password: 0 }).populate('developer');
 
     res.status(200).json({
       user: userDoc

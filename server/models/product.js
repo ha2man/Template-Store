@@ -26,12 +26,12 @@ const ProductSchema = new Schema({
     slug: 'name',
     unique: true
   },
-  imageUrl: {
-    type: String
-  },
-  imageKey: {
-    type: String
-  },
+  imageUrl: [
+    { type: String }
+  ],
+  imageKey: [
+    { type: String }
+  ],
   description: {
     type: String,
     trim: true

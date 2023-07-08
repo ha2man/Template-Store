@@ -166,7 +166,7 @@ router.post(
       const description = req.body.description;
       const price = req.body.price;
       const isActive = req.body.isActive;
-      const image = req.file;
+      const images = req.files;
 
       if (!description || !name) {
         return res
@@ -178,7 +178,13 @@ router.post(
         return res.status(400).json({ error: 'You must enter a price.' });
       }
 
-      const { imageUrl, imageKey } = await s3Upload(image);
+      const _imageUrl = [];
+      const _imageKey = [];
+      images.forEach(async image => {
+        const { imageUrl, imageKey } = await s3Upload(image);
+        _imageUrl.push(imageUrl);
+        _imageKey.push(imageKey);
+      })
 
       const product = new Product({
         name,
@@ -186,8 +192,8 @@ router.post(
         quantity,
         price,
         isActive,
-        imageUrl,
-        imageKey
+        imageUrl: _imageUrl,
+        imageKey: _imageKey
       });
 
       const savedProduct = await product.save();
@@ -305,7 +311,7 @@ router.put(
 router.put(
   '/:id/active',
   auth,
-  role.check(ROLES.Admin, ROLES.Merchant),
+  role.check(ROLES.Admin, ROLES.Developer),
   async (req, res) => {
     try {
       const productId = req.params.id;

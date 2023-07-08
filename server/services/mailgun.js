@@ -25,7 +25,7 @@ exports.sendEmail = async (email, type, host, data) => {
     const message = prepareTemplate(type, host, data);
 
     const config = {
-      from: `MERN Store! <${sender}>`,
+      from: `Template Store! <${sender}>`,
       to: email,
       subject: message.subject,
       text: message.text
@@ -63,6 +63,10 @@ const prepareTemplate = (type, host, data) => {
 
     case 'newsletter-subscription':
       message = template.newsletterSubscriptionEmail();
+      break;
+
+    case 'newsleter-unsubscription':
+      message = template.newsletterUnSubscriptionEmail();
       break;
 
     case 'contact':

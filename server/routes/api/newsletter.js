@@ -25,4 +25,25 @@ router.post('/subscribe', async (req, res) => {
   });
 });
 
+router.post('/unsubscribe', async (req, res) => {
+  const email = req.body.email;
+
+  if (!email) {
+    return res.status(400).json({ error: 'You must enter an email address.' });
+  }
+
+  const result = await mailchimp.unsubscribeToNewsletter(email);
+
+  if (result.status === 400) {
+    return res.status(400).json({ error: result.title });
+  }
+
+  await mailgun.sendEmail(email, 'newsletter-unsubscription');
+
+  res.status(200).json({
+    success: true,
+    message: 'You have successfully unsubscribed to the newsletter'
+  });
+})
+
 module.exports = router;

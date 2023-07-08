@@ -1,9 +1,10 @@
 const { exec } = require('child_process');
+const { database } = require('../config/keys');
 
 exports.backupDatabase = async (type) => {
     const today = new Date();
-  const backupPath = `/backup/${today.getFullYear()}_${today.getMonth()}_${today.getDate()}_${type}}`; // Set the path where you want to store the backups
-  const command = `mongodump --db ecommerce-apparels --out ${backupPath}`;
+  const backupPath = `db_backup/${today.getFullYear()}_${today.getMonth()}_${today.getDate()}_${type}`; // Set the path where you want to store the backups
+  const command = `mongodump --uri ${database.url} --out ${backupPath}`;
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
@@ -13,5 +14,3 @@ exports.backupDatabase = async (type) => {
     }
   });
 };
-
-backupDatabase();

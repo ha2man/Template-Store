@@ -12,6 +12,7 @@ const orderRoutes = require('./order');
 const reviewRoutes = require('./review');
 const stripeRoutes = require('./stripe');
 const wishlistRoutes = require('./wishlist');
+const backupRoutes = require('./backup');
 
 // auth routes
 router.use('/auth', authRoutes);
@@ -48,5 +49,8 @@ router.use('/stripe', stripeRoutes);
 
 // Wishlist routes
 router.use('/wishlist', wishlistRoutes);
+
+// Backup routes
+router.use('/backup', backupRoutes);
 
 module.exports = router;

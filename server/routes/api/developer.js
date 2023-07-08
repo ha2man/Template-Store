@@ -134,24 +134,24 @@ router.put('/:id/active', auth, async (req, res) => {
   }
 });
 
-// approve merchant
+// approve developer
 router.put('/approve/:id', auth, async (req, res) => {
   try {
-    const merchantId = req.params.id;
-    const query = { _id: merchantId };
+    const developerId = req.params.id;
+    const query = { _id: developerId };
     const update = {
-      status: MERCHANT_STATUS.Approved,
+      status: DEVELOPER_STATUS.Approved,
       isActive: true
     };
 
-    const merchantDoc = await Merchant.findOneAndUpdate(query, update, {
+    const developerDoc = await Developer.findOneAndUpdate(query, update, {
       new: true
     });
 
-    await createMerchantUser(
-      merchantDoc.email,
-      merchantDoc.name,
-      merchantId,
+    await createDeveloperUser(
+      developerDoc.email,
+      developerDoc.name,
+      developerId,
       req.headers.host
     );
 
@@ -165,17 +165,17 @@ router.put('/approve/:id', auth, async (req, res) => {
   }
 });
 
-// reject merchant
+// reject developer
 router.put('/reject/:id', auth, async (req, res) => {
   try {
-    const merchantId = req.params.id;
+    const developerId = req.params.id;
 
-    const query = { _id: merchantId };
+    const query = { _id: developerId };
     const update = {
-      status: MERCHANT_STATUS.Rejected
+      status: DEVELOPER_STATUS.Rejected
     };
 
-    await Merchant.findOneAndUpdate(query, update, {
+    await Developer.findOneAndUpdate(query, update, {
       new: true
     });
 
@@ -228,7 +228,7 @@ router.post('/signup/:token', async (req, res) => {
       new: true
     });
 
-    const merchantDoc = await Merchant.findOne({
+    const developerDoc = await Developer.findOne({
       email
     });
 
@@ -297,8 +297,8 @@ const createDeveloperUser = async (email, name, developer, host) => {
       firstName,
       lastName,
       resetPasswordToken,
-      merchant,
-      role: ROLES.Merchant
+      developer,
+      role: ROLES.Developer
     });
 
     await mailgun.sendEmail(email, 'developer-signup', host, {

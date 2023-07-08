@@ -36,13 +36,9 @@ $ yarn install
   * GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET & GOOGLE_CALLBACK_URL => Google Auth configuration
   * FACEBOOK_CLIENT_ID & FACEBOOK_CLIENT_SECRET & FACEBOOK_CALLBACK_URL => Facebook Auth configuration
   * AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY & AWS_REGION & AWS_BUCKET_NAME => AWS configuration
+  * STRIPE_SECRETE_KEY => Stripe configuration
 ```
 
-## Start development
-
-```
-$ yarn run dev
-```
 
 ## Simple build for production
 
@@ -50,7 +46,7 @@ $ yarn run dev
 $ yarn run build
 ```
 
-## Run build for production
+## Run production
 
 ```
 $ yarn start

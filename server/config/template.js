@@ -68,6 +68,17 @@ exports.newsletterSubscriptionEmail = () => {
   return message;
 };
 
+exports.newsletterUnSubscriptionEmail = () => {
+  const message = {
+    subject: 'Newsletter Unsubscription',
+    text:
+      `You are receiving this email because you unsubscribed to our newsletter. \n\n` +
+      `If you did not request this change, please contact us immediately.`
+  };
+
+  return message;
+}
+
 exports.contactEmail = () => {
   const message = {
     subject: 'Contact Us',
