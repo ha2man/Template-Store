@@ -9,38 +9,47 @@ const role = require('../../middleware/role');
 const store = require('../../utils/store');
 const { ROLES } = require('../../constants');
 
-router.post('/add', auth, role.check(ROLES.Admin), (req, res) => {
-  const name = req.body.name;
-  const description = req.body.description;
-  const products = req.body.products;
-  const isActive = req.body.isActive;
+router.post('/add', auth, role.check(ROLES.Admin), async (req, res) => {
+  try {
+    const name = req.body.name;
+    const description = req.body.description;
+    const slug = req.body.slug;
+    const products = req.body.products;
+    const isActive = req.body.isActive;
 
-  if (!description || !name) {
-    return res
-      .status(400)
-      .json({ error: 'You must enter description & name.' });
-  }
-
-  const category = new Category({
-    name,
-    description,
-    products,
-    isActive
-  });
-
-  category.save((err, data) => {
-    if (err) {
-      return res.status(400).json({
-        error: 'Your request could not be processed. Please try again.'
-      });
+    if (!slug) {
+      return res
+        .status(400)
+        .json({ error: 'You must enter slug.' });
     }
 
+    if (!description || !name) {
+      return res
+        .status(400)
+        .json({ error: 'You must enter description & name.' });
+    }
+
+    const category = new Category({
+      name,
+      description,
+      products,
+      slug,
+      isActive
+    });
+
+    console.log(category);
+    const categoryDoc = await category.save();
+    
     res.status(200).json({
       success: true,
       message: `Category has been added successfully!`,
-      category: data
+      category: categoryDoc
     });
-  });
+  } catch (error) {
+    res.status(400).json({
+      error: 'Your request could not be processed. Please try again.'
+    });
+  }
 });
 
 // fetch store categories api
