@@ -180,16 +180,17 @@ router.post(
 
       const _imageUrl = [];
       const _imageKey = [];
-      images.forEach(async image => {
-        const { imageUrl, imageKey } = await s3Upload(image);
-        _imageUrl.push(imageUrl);
-        _imageKey.push(imageKey);
-      })
+      if (images) {
+        images.forEach(async image => {
+          const { imageUrl, imageKey } = await s3Upload(image);
+          _imageUrl.push(imageUrl);
+          _imageKey.push(imageKey);
+        })
+      }
 
       const product = new Product({
         name,
         description,
-        quantity,
         price,
         isActive,
         imageUrl: _imageUrl,

@@ -135,7 +135,7 @@ router.put('/:id/active', auth, async (req, res) => {
 });
 
 // approve developer
-router.put('/approve/:id', auth, async (req, res) => {
+router.put('/approve/:id', auth, role.check(ROLES.Admin), async (req, res) => {
   try {
     const developerId = req.params.id;
     const query = { _id: developerId };
@@ -166,7 +166,7 @@ router.put('/approve/:id', auth, async (req, res) => {
 });
 
 // reject developer
-router.put('/reject/:id', auth, async (req, res) => {
+router.put('/reject/:id', auth, role.check(ROLES.Admin), async (req, res) => {
   try {
     const developerId = req.params.id;
 
