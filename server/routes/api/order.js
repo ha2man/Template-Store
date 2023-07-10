@@ -154,10 +154,9 @@ router.get('/me', auth, async (req, res) => {
       .exec();
 
     const count = await Order.countDocuments(query);
-    const orders = store.formatOrders(ordersDoc);
 
     res.status(200).json({
-      orders,
+      orders: ordersDoc,
       totalPages: Math.ceil(count / limit),
       currentPage: Number(page),
       count
