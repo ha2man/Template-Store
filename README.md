@@ -2,6 +2,7 @@
 
 ## Description
 
+A template store built with MERN stack, and utilizes third party API's.
 
 ## Database Seed
 
@@ -39,11 +40,22 @@ $ yarn install
   * STRIPE_SECRETE_KEY => Stripe configuration
 ```
 
+## Start development
+
+```
+$ yarn dev
+```
+
+## Clean production
+
+```
+$ yarn clean
+```
 
 ## Simple build for production
 
 ```
-$ yarn run build
+$ yarn build
 ```
 
 ## Run production
@@ -60,6 +72,8 @@ $ yarn start
 - [Express](https://expressjs.com/)
 
 - [Mongoose](https://mongoosejs.com/)
+
+- [React](https://reactjs.com)
 
 
 ### Code Formatter
