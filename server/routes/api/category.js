@@ -85,10 +85,7 @@ router.get('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
 
-    const categoryDoc = await Category.findOne({ _id: categoryId }).populate({
-      path: 'products',
-      select: 'name'
-    });
+    const categoryDoc = await Category.findOne({ _id: categoryId }).populate('products');
 
     if (!categoryDoc) {
       return res.status(404).json({

@@ -50,6 +50,10 @@ export const navigation = [
     href: 'home',
   },
   {
+    name: 'store',
+    href: 'store',
+  },
+  {
     name: 'about',
     href: 'about',
   },
@@ -68,7 +72,7 @@ export const navigation = [
   {
     name: 'contact',
     href: 'contact',
-  },
+  }
 ];
 
 // social

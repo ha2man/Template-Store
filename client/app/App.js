@@ -8,6 +8,7 @@ import About from './components/About';
 import Portfolio from './components/Portfolio';
 import Skills from './components/Skills';
 import Services from './components/Services';
+import Store from './components/Store';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Testimonials from './components/Testimonials';
@@ -22,10 +23,12 @@ const App = () => {
       <Header />
       <Hero />
       <Brands />
+      <Store />
       <About />
       <Skills />
       <Portfolio />
       <Services />
+      
       <Testimonials />
       <Contact />
       <Footer />
